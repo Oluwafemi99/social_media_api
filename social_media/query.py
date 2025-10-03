@@ -1,6 +1,8 @@
 import graphene
-from .models import Post, Comment, Like, Follow
-from .types import PostTypes, CommentTypes, LikeTypes
+from .models import Post, Comment, Like, Follow, Message
+from .types import PostTypes, CommentTypes, LikeTypes, MessageTypes
+from graphql import GraphQLError
+from django.db.models import Q
 
 
 class FeedQuery(graphene.ObjectType):
@@ -29,3 +31,26 @@ class InteractionQuery(graphene.ObjectType):
 
     def resolve_likes(self, info, post_id):
         return Like.objects.filter(post_id=post_id)
+
+
+class MessageQuery(graphene.ObjectType):
+    messages = graphene.List(
+        MessageTypes,
+        recipient_id=graphene.ID(),
+        user_id=graphene.ID()
+    )
+
+    def resolve_messages(self, info, recipient_id=None, user_id=None):
+        user = info.context.user
+        if user.is_anonymous:
+            raise GraphQLError("Authentication required")
+
+        # Base queryset: messages where current user is sender or recipient
+        queryset = Message.objects.filter(Q(user=user) | Q(recipient=user))
+
+        if recipient_id:
+            queryset = queryset.filter(recipient_id=recipient_id)
+        if user_id:
+            queryset = queryset.filter(user_id=user_id)
+
+        return queryset.order_by("-timestamp")

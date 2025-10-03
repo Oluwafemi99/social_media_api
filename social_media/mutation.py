@@ -144,7 +144,7 @@ class SendMessage(graphene.Mutation):
                     ok=False, error="You can only message users you follow")
 
             recipient = Users.objects.get(id=recipient_id)
-            message = Message.objects.get_or_create(
+            message, _ = Message.objects.get_or_create(
                 user=user, recipient=recipient, text=text)
             return SendMessage(message=message, ok=True)
         except Exception as e:
@@ -244,8 +244,8 @@ class CreateComment(graphene.Mutation):
         try:
             user = info.context.user
             post = Post.objects.get(pk=post_id)
-            comment = Comment.objects.get_or_create(user=user,
-                                                    post=post, text=text)
+            comment, _ = Comment.objects.get_or_create(user=user,
+                                                       post=post, text=text)
             return CreateComment(comment=comment, ok=True)
         except ValidationError as e:
             return CreateComment(ok=False, error=str(e))
@@ -275,14 +275,14 @@ class SharePost(graphene.Mutation):
 
     class Arguments:
         post_id = graphene.UUID(required=True)
-        shared_to = graphene.String(required=True)
+        share_to = graphene.String(required=True)
 
-    def mutate(self, info, post_id, shared_to):
+    def mutate(self, info, post_id, share_to):
         try:
             user = info.context.user
             post = Post.objects.get(pk=post_id)
-            share = Share.objects.get_or_create(user=user, post=post,
-                                                shared_to=shared_to)
+            share, _ = Share.objects.get_or_create(user=user, post=post,
+                                                   share_to=share_to)
             return SharePost(share=share, ok=True)
         except ValidationError as e:
             return SharePost(ok=False, error=str(e))

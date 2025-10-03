@@ -83,3 +83,6 @@ class Message(models.Model):
     recipient = models.ForeignKey(Users, on_delete=models.CASCADE,
                                   related_name='recieved_messages')
     timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.user.username}: {self.text}'

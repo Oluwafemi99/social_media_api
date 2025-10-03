@@ -4,7 +4,7 @@ from .mutation import (CreateComment, CreatePost, CreateUser,
                        UnfollowUser, UnlikePost, UpdatePost, FollowUser,
                        SharePost, LikePost, DeleteComment, DeletePost,
                        UpdateUser, SendMessage)
-from .query import FeedQuery, InteractionQuery
+from .query import FeedQuery, InteractionQuery, MessageQuery
 
 
 class Mutation(graphene.ObjectType):
@@ -26,7 +26,7 @@ class Mutation(graphene.ObjectType):
     send_message = SendMessage.Field()
 
 
-class Query(FeedQuery, InteractionQuery, graphene.ObjectType):
+class Query(FeedQuery, InteractionQuery, MessageQuery, graphene.ObjectType):
     pass
 
 

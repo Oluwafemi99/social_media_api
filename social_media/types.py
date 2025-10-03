@@ -1,5 +1,5 @@
 from graphene_django.types import DjangoObjectType
-from .models import Users, Post, Follow, Comment, Share, Like
+from .models import Users, Post, Follow, Comment, Share, Like, Message
 
 
 class UserTypes(DjangoObjectType):
@@ -41,4 +41,11 @@ class ShareTypes(DjangoObjectType):
 
     class Meta:
         model = Share
+        fields = '__all__'
+
+
+class MessageTypes(DjangoObjectType):
+
+    class Meta:
+        model = Message
         fields = '__all__'

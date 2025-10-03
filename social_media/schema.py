@@ -2,7 +2,8 @@ import graphene
 import graphql_jwt
 from .mutation import (CreateComment, CreatePost, CreateUser,
                        UnfollowUser, UnlikePost, UpdatePost, FollowUser,
-                       SharePost, LikePost, DeleteComment, DeletePost)
+                       SharePost, LikePost, DeleteComment, DeletePost,
+                       UpdateUser, SendMessage)
 from .query import FeedQuery, InteractionQuery
 
 
@@ -21,6 +22,8 @@ class Mutation(graphene.ObjectType):
     token_auth = graphql_jwt.ObtainJSONWebToken.Field()
     verify_token = graphql_jwt.Verify.Field()
     refresh_token = graphql_jwt.Refresh.Field()
+    update_user = UpdateUser.Field()
+    send_message = SendMessage.Field()
 
 
 class Query(FeedQuery, InteractionQuery, graphene.ObjectType):

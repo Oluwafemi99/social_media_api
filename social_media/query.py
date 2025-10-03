@@ -15,8 +15,8 @@ class FeedQuery(graphene.ObjectType):
         if search:
             posts = posts.filter(content__icontains=search)
         if date:
-            posts = posts.filter(timestamp__date=date)
-        return posts.order_by('-timestamp')
+            posts = posts.filter(created_at__date=date)
+        return posts.order_by('-created_at')
 
 
 class InteractionQuery(graphene.ObjectType):

@@ -34,7 +34,7 @@ class Follow(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('follower, following')
+        unique_together = ('follower', 'following')
 
     def __str__(self):
         return f'{self.follower.username} is following {
@@ -74,3 +74,12 @@ class Share(models.Model):
 
     def __str__(self):
         return f"{self.user} shared to {self.share_to[:30]}"
+
+
+class Message(models.Model):
+    user = models.ForeignKey(Users, on_delete=models.CASCADE,
+                             related_name='sent_messages')
+    text = models.TextField()
+    recipient = models.ForeignKey(Users, on_delete=models.CASCADE,
+                                  related_name='recieved_messages')
+    timestamp = models.DateTimeField(auto_now_add=True)

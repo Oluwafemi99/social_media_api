@@ -1,6 +1,6 @@
 import graphene
-from .models import Post, Comment, Like, Follow, Message
-from .types import PostTypes, CommentTypes, LikeTypes, MessageTypes
+from .models import Post, Comment, Like, Follow, Message, Users
+from .types import PostTypes, CommentTypes, LikeTypes, MessageTypes, UserTypes
 from graphql import GraphQLError
 from django.db.models import Q
 
@@ -25,12 +25,20 @@ class InteractionQuery(graphene.ObjectType):
     comments = graphene.List(
         CommentTypes, post_id=graphene.UUID(required=True))
     likes = graphene.List(LikeTypes, post_id=graphene.UUID(required=True))
+    all_users = graphene.List(UserTypes)
+    all_posts = graphene.List(PostTypes)
 
     def resolve_comments(self, info, post_id):
         return Comment.objects.filter(post_id=post_id)
 
     def resolve_likes(self, info, post_id):
         return Like.objects.filter(post_id=post_id)
+
+    def resolve_all_users(self, info):
+        return Users.objects.all()
+
+    def resolve_all_posts(self, info):
+        return Post.objects.select_related('user').all()
 
 
 class MessageQuery(graphene.ObjectType):

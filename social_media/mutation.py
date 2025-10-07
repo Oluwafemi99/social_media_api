@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from .models import Post, Follow, Share, Like, Comment, Message, Users
 from django.core.exceptions import ValidationError
 from graphql import GraphQLError
+from graphql_jwt.decorators import login_required
 
 
 class CreateUser(graphene.Mutation):
@@ -17,13 +18,18 @@ class CreateUser(graphene.Mutation):
         username = graphene.String(required=True)
         email = graphene.String(required=True)
         password = graphene.String(required=True)
-        bio = graphene.String()
-        profile_picture = graphene.JSONString()
+        bio = graphene.String(required=False)
+        profile_picture = graphene.JSONString(required=False)
+        first_name = graphene.String(required=True)
+        last_name = graphene.String(required=True)
 
-    def mutate(self, info, username, email, password, bio, profile_picture):
+    def mutate(self, info, username, email, password, first_name, last_name,
+               bio=None, profile_picture=None, ):
+        User = get_user_model()
         try:
-            user = get_user_model()(username=username, email=email, bio=bio,
-                                    profile_picture=profile_picture)
+            user = User(username=username, email=email, bio=bio,
+                        profile_picture=profile_picture, first_name=first_name,
+                        last_name=last_name)
             user.set_password(password)
             user.save()
             return CreateUser(user=user, ok=True)
@@ -37,10 +43,13 @@ class UpdateUser(graphene.Mutation):
     error = graphene.String()
 
     class Arguments:
-        bio = graphene.String()
-        profile_picture = graphene.String()
+        bio = graphene.String(required=False)
+        profile_picture = graphene.String(required=False)
+        first_name = graphene.String(required=False)
+        last_name = graphene.String(required=False)
 
-    def mutate(self, info, bio=None, profile_picture=None):
+    def mutate(self, info, bio=None, profile_picture=None,
+               last_name=None, first_name=None):
         try:
             user = info.context.user
             if user.is_anonymous:
@@ -49,6 +58,10 @@ class UpdateUser(graphene.Mutation):
                 user.bio = bio
             if profile_picture is not None:
                 user.profile_picture = profile_picture
+            if last_name is not None:
+                user.last_name = last_name
+            if first_name is not None:
+                user.first_name = first_name
             user.save()
             return UpdateUser(ok=True, user=user)
         except Exception as e:
@@ -117,6 +130,7 @@ class DeletePost(graphene.Mutation):
             if post.user != user:
                 raise GraphQLError('Not Authorised')
             post.delete()
+            print("post deleted succesfully")
             return DeletePost(ok=True)
         except ValidationError as e:
             return DeletePost(ok=False, error=str(e))
@@ -132,23 +146,20 @@ class SendMessage(graphene.Mutation):
         text = graphene.String(required=True)
 
     def mutate(self, info, recipient_id, text):
-        try:
-            user = info.context.user
-            if user.is_anonymous:
-                raise GraphQLError("Authentication Required")
+        user = info.context.user
+        if user.is_anonymous:
+            raise GraphQLError("Authentication Required")
 
-            # Check if sender follows recipient
-            if not Follow.objects.filter(follower=user,
-                                         following_id=recipient_id).exists():
-                return SendMessage(
-                    ok=False, error="You can only message users you follow")
+        # Check if sender follows recipient
+        if not Follow.objects.filter(follower=user,
+                                     following_id=recipient_id).exists():
+            raise ValidationError("You can only message users you follow")
 
-            recipient = Users.objects.get(id=recipient_id)
-            message, _ = Message.objects.get_or_create(
-                user=user, recipient=recipient, text=text)
-            return SendMessage(message=message, ok=True)
-        except Exception as e:
-            return SendMessage(ok=False, error=str(e))
+        recipient = Users.objects.get(id=recipient_id)
+        message, _ = Message.objects.get_or_create(
+            user=user, recipient=recipient, text=text)
+        print("message sent")
+        return SendMessage(message=message, ok=True)
 
 
 class FollowUser(graphene.Mutation):
@@ -160,12 +171,21 @@ class FollowUser(graphene.Mutation):
         user_id = graphene.ID(required=True)
 
     def mutate(self, info, user_id):
+        follower = info.context.user
+
+        # Check for authentication
+        if follower.is_anonymous:
+            raise GraphQLError("Authentication required to follow users.")
+
+        # Prevent self-following
+        if str(follower.id) == str(user_id):
+            raise GraphQLError("You cannot follow yourself.")
+
         try:
-            follower = info.context.user
-            if str(follower.id) == user_id:
-                raise GraphQLError('Cannot Follow Yourself')
-            follow, _ = Follow.objects.get_or_create(follower=follower,
-                                                     following_id=user_id)
+            follow, _ = Follow.objects.get_or_create(
+                follower=follower,
+                following_id=user_id
+            )
             return FollowUser(ok=True, follow=follow)
         except ValidationError as e:
             return FollowUser(ok=False, error=str(e))
@@ -184,6 +204,7 @@ class UnfollowUser(graphene.Mutation):
             follower = info.context.user
             Follow.objects.filter(follower=follower,
                                   following_id=user_id).delete()
+            print("successfully unfollowed")
             return UnfollowUser(ok=True)
         except ValidationError as e:
             return UnfollowUser(ok=False, error=str(e))
@@ -197,6 +218,7 @@ class LikePost(graphene.Mutation):
     class Arguments:
         post_id = graphene.UUID(required=True)
 
+    @login_required
     def mutate(self, info, post_id):
         try:
             user = info.context.user
@@ -240,6 +262,7 @@ class CreateComment(graphene.Mutation):
         post_id = graphene.UUID(required=True)
         text = graphene.String(required=True)
 
+    @login_required
     def mutate(self, info, post_id, text):
         try:
             user = info.context.user
@@ -259,10 +282,11 @@ class DeleteComment(graphene.Mutation):
     class Arguments:
         post_id = graphene.UUID(required=True)
 
+    @login_required
     def mutate(self, info, post_id):
         try:
             user = info.context.user
-            Comment.objects.filter(user=user, comment_id=post_id).delete()
+            Comment.objects.filter(user=user, id=post_id).delete()
             return DeleteComment(ok=True)
         except ValidationError as e:
             return DeleteComment(ok=False, error=str(e))
@@ -275,14 +299,37 @@ class SharePost(graphene.Mutation):
 
     class Arguments:
         post_id = graphene.UUID(required=True)
-        share_to = graphene.String(required=True)
+        share_to = graphene.String(required=True)  # could be a username or "feed"
 
+    @login_required
     def mutate(self, info, post_id, share_to):
+        user = info.context.user
+
         try:
-            user = info.context.user
             post = Post.objects.get(pk=post_id)
-            share, _ = Share.objects.get_or_create(user=user, post=post,
-                                                   share_to=share_to)
+
+            # Share to own feed
+            if share_to.lower() == "feed":
+                share, _ = Share.objects.get_or_create(
+                    user=user, post=post, share_to="feed")
+                return SharePost(share=share, ok=True)
+
+            # Share to a followed user
+            try:
+                target_user = Users.objects.get(username=share_to)
+            except Users.DoesNotExist:
+                return SharePost(ok=False, error="Target user does not exist.")
+
+            is_following = Follow.objects.filter(
+                follower=user, following=target_user).exists()
+            if not is_following:
+                return SharePost(ok=False, error="You can only share posts with users you follow.")
+
+            share, _ = Share.objects.get_or_create(
+                user=user, post=post, share_to=target_user.username)
             return SharePost(share=share, ok=True)
+
         except ValidationError as e:
             return SharePost(ok=False, error=str(e))
+        except Exception as e:
+            return SharePost(ok=False, error="Unexpected error: " + str(e))

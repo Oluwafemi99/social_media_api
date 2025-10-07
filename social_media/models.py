@@ -22,6 +22,10 @@ class Post(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True)
     media = models.JSONField(blank=True, null=True)
 
+    @property
+    def id(self):
+        return self.post_id
+
     def __str__(self):
         return f"{self.user}: {self.content[:30]}"
 
@@ -30,7 +34,7 @@ class Follow(models.Model):
     follower = models.ForeignKey(Users, on_delete=models.CASCADE,
                                  related_name='following')
     following = models.ForeignKey(Users, on_delete=models.CASCADE,
-                                  related_name='follower')
+                                  related_name='followers')
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -86,3 +90,32 @@ class Message(models.Model):
 
     def __str__(self):
         return f'{self.user.username}: {self.text}'
+
+
+# RequestLog Model
+class RequestLog(models.Model):
+    ip_address = models.GenericIPAddressField()
+    timestamp = models.DateTimeField()
+    path = models.CharField(max_length=2048)
+    country = models.CharField(max_length=100, blank=True, null=True)
+    city = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.ip_address} at {self.timestamp} -> {self.path}"
+
+
+# BlockedIp Model
+class BlockedIP(models.Model):
+    ip_address = models.GenericIPAddressField()
+
+    def __str__(self):
+        return self.ip_address
+
+
+# Model For Suspicious Ip logged
+class SuspiciousIP(models.Model):
+    ip_address = models.GenericIPAddressField()
+    reason = models.TextField()
+
+    def __str__(self):
+        return f'{self.ip_address}, {self.reason}'

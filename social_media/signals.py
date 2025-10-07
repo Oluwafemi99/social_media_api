@@ -1,7 +1,7 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from .models import Like, Follow, Message
-from .task import (send_like_notification, send_follow_notification,
+from .tasks import (send_like_notification, send_follow_notification,
                    send_message_notification)
 
 
@@ -21,4 +21,5 @@ def follow_created(sender, instance, created, **kwargs):
 @receiver(post_save, sender=Message)
 def message_created(sender, instance, created, **kwargs):
     if created:
-        send_message_notification.delay(instance.message.id, instance.user.id)
+        send_message_notification.delay(
+            instance.user.id, instance.recipient.id)

@@ -1,10 +1,10 @@
 import graphene
-import graphql_jwt
 from .mutation import (CreateComment, CreatePost, CreateUser,
                        UnfollowUser, UnlikePost, UpdatePost, FollowUser,
                        SharePost, LikePost, DeleteComment, DeletePost,
-                       UpdateUser, SendMessage)
+                       UpdateUser, SendMessage,)
 from .query import FeedQuery, InteractionQuery, MessageQuery
+from . auth import LogoutUser, LoginUser, RefreshTokenMutation
 
 
 class Mutation(graphene.ObjectType):
@@ -18,12 +18,12 @@ class Mutation(graphene.ObjectType):
     share_post = SharePost.Field()
     like_post = LikePost.Field()
     delete_comment = DeleteComment.Field()
-    delet_post = DeletePost.Field()
-    token_auth = graphql_jwt.ObtainJSONWebToken.Field()
-    verify_token = graphql_jwt.Verify.Field()
-    refresh_token = graphql_jwt.Refresh.Field()
+    delete_post = DeletePost.Field()
     update_user = UpdateUser.Field()
     send_message = SendMessage.Field()
+    logout_user = LogoutUser.Field()
+    login_user = LoginUser.Field()
+    refresh_token = RefreshTokenMutation.Field()
 
 
 class Query(FeedQuery, InteractionQuery, MessageQuery, graphene.ObjectType):

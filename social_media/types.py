@@ -1,5 +1,6 @@
 from graphene_django.types import DjangoObjectType
 from .models import Users, Post, Follow, Comment, Share, Like, Message
+import graphene
 
 
 class UserTypes(DjangoObjectType):
@@ -49,3 +50,12 @@ class MessageTypes(DjangoObjectType):
     class Meta:
         model = Message
         fields = '__all__'
+
+    user = graphene.Field(lambda: UserTypes)
+    recipient = graphene.Field(lambda: UserTypes)
+
+    def resolve_user(self, info):
+        return self.user
+
+    def resolve_recipient(self, info):
+        return self.recipient

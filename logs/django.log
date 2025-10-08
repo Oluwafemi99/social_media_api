@@ -888,3 +888,53 @@
 [2025-10-07 06:01:37,232] INFO django.utils.autoreload C:\Users\user\social_media_api\social_media\mutation.py changed, reloading.
 [2025-10-07 06:01:40,085] INFO django.utils.autoreload Watching for file changes with StatReloader
 [2025-10-07 06:08:00,924] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-07 12:16:18,992] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-07 12:16:49,284] INFO django.server "GET /graphql HTTP/1.1" 200 2611
+[2025-10-07 12:16:49,385] INFO django.server "GET /static/graphene_django/graphiql.js HTTP/1.1" 304 0
+[2025-10-07 12:16:49,650] INFO django.server "POST /graphql HTTP/1.1" 200 48709
+[2025-10-07 12:18:14,866] INFO django.server "POST /graphql HTTP/1.1" 200 525
+[2025-10-08 06:24:51,818] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-08 08:29:01,577] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-10-08 08:29:58,873] INFO django.server "GET /admin/django_celery_results/taskresult/ HTTP/1.1" 200 24153
+[2025-10-08 08:29:58,943] INFO django.server "GET /static/admin/css/base.css HTTP/1.1" 304 0
+[2025-10-08 08:29:58,949] INFO django.server "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+[2025-10-08 08:29:58,956] INFO django.server "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+[2025-10-08 08:29:58,958] INFO django.server "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+[2025-10-08 08:29:58,958] INFO django.server "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 304 0
+[2025-10-08 08:29:58,962] INFO django.server "GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+[2025-10-08 08:29:58,967] INFO django.server "GET /static/admin/css/changelists.css HTTP/1.1" 304 0
+[2025-10-08 08:29:58,977] INFO django.server "GET /static/admin/js/core.js HTTP/1.1" 304 0
+[2025-10-08 08:29:58,978] INFO django.server "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+[2025-10-08 08:29:58,986] INFO django.server "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+[2025-10-08 08:29:58,991] INFO django.server "GET /static/admin/js/actions.js HTTP/1.1" 304 0
+[2025-10-08 08:29:58,992] INFO django.server "GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+[2025-10-08 08:29:58,995] INFO django.server "GET /static/admin/img/search.svg HTTP/1.1" 304 0
+[2025-10-08 08:29:58,998] INFO django.server "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 304 0
+[2025-10-08 08:29:58,999] INFO django.server "GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+[2025-10-08 08:29:59,020] INFO django.server "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+[2025-10-08 08:29:59,027] INFO django.server "GET /static/admin/js/filters.js HTTP/1.1" 304 0
+[2025-10-08 08:29:59,038] INFO django.server "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[2025-10-08 08:29:59,079] INFO django.server "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+[2025-10-08 08:29:59,082] INFO django.server "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 304 0
+[2025-10-08 08:29:59,087] INFO django.server "GET /static/admin/img/sorting-icons.svg HTTP/1.1" 304 0
+[2025-10-08 08:29:59,088] INFO django.server "GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 304 0
+[2025-10-08 08:30:07,449] INFO django.server "GET /admin/django_celery_results/taskresult/10/change/ HTTP/1.1" 200 25657
+[2025-10-08 08:30:07,521] INFO django.server "GET /static/admin/css/forms.css HTTP/1.1" 304 0
+[2025-10-08 08:30:07,522] INFO django.server "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 304 0
+[2025-10-08 08:30:07,555] INFO django.server "GET /static/admin/css/widgets.css HTTP/1.1" 304 0
+[2025-10-08 08:30:07,564] INFO django.server "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[2025-10-08 08:30:07,570] INFO django.server "GET /static/admin/js/change_form.js HTTP/1.1" 304 0
+[2025-10-08 08:31:04,499] INFO django.server "GET /admin/social_media/requestlog/ HTTP/1.1" 200 35767
+[2025-10-08 08:31:04,614] INFO django.server "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[2025-10-08 08:32:13,116] INFO django.server "GET /admin/social_media/like/ HTTP/1.1" 200 15195
+[2025-10-08 08:32:13,180] INFO django.server "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[2025-10-08 08:32:21,021] INFO django.server "GET /admin/social_media/like/add/ HTTP/1.1" 200 17535
+[2025-10-08 08:32:21,097] INFO django.server "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 304 0
+[2025-10-08 08:32:21,129] INFO django.server "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[2025-10-08 08:32:46,776] INFO social_media.tasks Notify eze: 1234 liked your post 'hello World'
+[2025-10-08 08:32:46,791] INFO django.server "POST /admin/social_media/like/add/ HTTP/1.1" 302 0
+[2025-10-08 08:32:46,871] INFO django.server "GET /admin/social_media/like/ HTTP/1.1" 200 15773
+[2025-10-08 08:32:46,948] INFO django.server "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[2025-10-08 08:32:47,121] INFO django.server "GET /static/admin/img/icon-yes.svg HTTP/1.1" 200 436
+[2025-10-08 08:33:03,250] INFO django.server "GET /admin/django_celery_results/taskresult/ HTTP/1.1" 200 24727
+[2025-10-08 08:33:03,322] INFO django.server "GET /admin/jsi18n/ HTTP/1.1" 200 3342

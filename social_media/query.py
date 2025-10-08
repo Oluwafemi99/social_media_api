@@ -5,6 +5,7 @@ from graphql import GraphQLError
 from django.db.models import Q
 
 
+# Query for Feeds 
 class FeedQuery(graphene.ObjectType):
     feed = graphene.List(PostTypes, search=graphene.String(),
                          date=graphene.String())
@@ -21,6 +22,7 @@ class FeedQuery(graphene.ObjectType):
         return posts.order_by('-created_at')
 
 
+# Interaction Query
 class InteractionQuery(graphene.ObjectType):
     comments = graphene.List(
         CommentTypes, post_id=graphene.UUID(required=True))
@@ -41,6 +43,7 @@ class InteractionQuery(graphene.ObjectType):
         return Post.objects.select_related('user').all()
 
 
+# Message Query
 class MessageQuery(graphene.ObjectType):
     messages = graphene.List(
         MessageTypes,

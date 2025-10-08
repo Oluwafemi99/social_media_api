@@ -8,6 +8,12 @@ from django.core.exceptions import ValidationError
 from graphql import GraphQLError
 from graphql_jwt.decorators import login_required
 
+""""
+Mutation for CreateUser, UpdateUser, CreatePost, UpdatePost
+DeletePost, createComment, LikePost, UnlikePost, SendMessage
+FollowUser, UnFollowUser
+"""
+
 
 class CreateUser(graphene.Mutation):
     user = graphene.Field(UserTypes)

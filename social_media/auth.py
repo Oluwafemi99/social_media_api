@@ -2,6 +2,11 @@ import graphene
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 
+""""
+Mutation for User's Login Logout And RefreshToken Using
+simple Jwt
+"""
+
 
 class LoginUser(graphene.Mutation):
     access = graphene.String()

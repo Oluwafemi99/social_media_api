@@ -6,6 +6,10 @@ from .mutation import (CreateComment, CreatePost, CreateUser,
 from .query import FeedQuery, InteractionQuery, MessageQuery
 from . auth import LogoutUser, LoginUser, RefreshTokenMutation
 
+""""
+Mutation and Query for Schema
+"""
+
 
 class Mutation(graphene.ObjectType):
     create_comment = CreateComment.Field()

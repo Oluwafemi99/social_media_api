@@ -8,6 +8,7 @@ from django.utils.timezone import now, timedelta
 logger = logging.getLogger(__name__)
 
 
+# Send Like Notification
 @shared_task
 def send_like_notification(post_id, user_id):
     try:
@@ -20,6 +21,7 @@ def send_like_notification(post_id, user_id):
         logger.error(f"send_like_notification failed: {str(e)}")
 
 
+# Task to Send follow notification
 @shared_task
 def send_follow_notification(follower_id, following_id):
     try:
@@ -33,6 +35,7 @@ def send_follow_notification(follower_id, following_id):
         logger.error(f"send_follow_notification failed: {str(e)}")
 
 
+# task to send message notification
 @shared_task
 def send_message_notification(user_id, recipient_id):
     try:

@@ -2,6 +2,10 @@ from graphene_django.types import DjangoObjectType
 from .models import Users, Post, Follow, Comment, Share, Like, Message
 import graphene
 
+""""
+Creating Object Type for Comment, Users, Post, Follow, Share, like, Message
+"""
+
 
 class UserTypes(DjangoObjectType):
 

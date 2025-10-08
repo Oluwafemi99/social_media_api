@@ -9,6 +9,7 @@ access_token = "7567b26db7c484"
 ipinfo_handler = ipinfo.getHandler(access_token)
 
 
+# Middleware Request Logging
 class RequestLoggingMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response

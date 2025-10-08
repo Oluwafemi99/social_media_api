@@ -2,7 +2,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from .models import Like, Follow, Message
 from .tasks import (send_like_notification, send_follow_notification,
-                   send_message_notification)
+                    send_message_notification)
 
 
 @receiver(post_save, sender=Like)
